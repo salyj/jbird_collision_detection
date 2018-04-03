@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="styles.css" />
+	<script type="text/javascript" src="jbird.js"></script>
+	<script type="text/javascript" src="objectTypes.js"></script>
+</head>
+<body>
+	<div id="box">
+	</div>
+	<div id="wall" style="position: absolute; top: 300px; left: 650px; width: 100px; height: 100px; background-color: white;">
+	</div>
+	<div id="wall2" style="position: absolute; top: 350px; left: 750px; width: 100px; height: 100px; background-color: white;">
+	</div>
+	<div id="wall3" style="position: absolute; top: 375px; left: 850px; width: 50px; height: 300px; background-color: white;">\
+	</div>
+	<script>
+		var objectList = new Array();
+
+		var ticks = 5;
+		var speed = 1;
+		var interval;
+		var player = new OnScreenObject(document.getElementById("box"), 50, 50, 0, 300, 1, true);
+
+		objectList.push(player);
+		objectList.push(new OnScreenObject(document.getElementById("wall"), 100, 100, 650, 300, 2, false));
+		objectList.push(new OnScreenObject(document.getElementById("wall2"), 100, 100, 750, 350, 3, false));
+		objectList.push(new OnScreenObject(document.getElementById("wall3"), 50, 300, 850, 375, 4, false));		
+
+		document.onkeyup = function(e) {
+			console.log("key is up! " + e.keyCode);
+			switch(e.keyCode) {
+				case 37: // left arrow
+					clearInterval(interval);
+
+						interval = setInterval(function() {
+							if(!detectCollision(objectList, player.posX - speed, player.posY, player)) {
+								player.posX = player.posX - speed;
+								move(player.object, "" + player.posX + "px", "" + player.posY +  "px");
+
+								if(player.posX > screen.width - 56 || player.posX <= 0) {
+									clearInterval(interval);
+								}
+							}
+						}, ticks);
+
+					break;
+				case 38: // up arrow
+					clearInterval(interval);
+
+						interval = setInterval(function() {
+							if(!detectCollision(objectList, player.posX, player.posY - speed, player)) {
+								player.posY = player.posY - speed;
+								move(player.object, "" + player.posX + "px", "" + player.posY +  "px");
+
+								if(player.posY > screen.height - 186 || player.posY <= 0) {
+									clearInterval(interval);
+								}
+							}
+						}, ticks);
+
+					break;
+				case 39: // right arrow
+					clearInterval(interval);
+
+						interval = setInterval(function() {
+							if(!detectCollision(objectList, player.posX + speed, player.posY, player)) {
+								player.posX = player.posX + speed;
+								move(player.object, "" + player.posX + "px", "" + player.posY +  "px");
+
+								if(player.posX > screen.width - 56 || player.posX <= 0) {
+									clearInterval(interval);
+								}
+							}
+						}, ticks);
+
+					break;
+				case 40: // down arrow
+					clearInterval(interval);
+					interval = setInterval(function() {
+						if(!detectCollision(objectList, player.posX, player.posY + speed, player)) {
+							player.posY = player.posY + speed;
+							move(player.object, "" + player.posX + "px", "" + player.posY +  "px");
+
+							if(player.posY > screen.height - 186 || player.posY <= 0) {
+								clearInterval(interval);
+							}
+						}
+					}, ticks);
+					break;
+				case 32: // Spacebar
+					clearInterval(interval);
+			}
+		}
+	</script>
+</body>
+</html>
